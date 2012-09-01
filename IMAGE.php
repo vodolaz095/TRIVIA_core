@@ -61,9 +61,9 @@ class IMAGE
                 }
             }
 
-        public function __toString($image_type = IMAGETYPE_JPEG)
+        public function __toString()
             {
-                $this->output($image_type);
+                $this->output(IMAGETYPE_JPEG);
             }
 
         public function getWidth()
