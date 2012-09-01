@@ -8,7 +8,6 @@ class REDIS
         protected static $instance;
         private $sock;
         private $stats=array();
-        private $CRLF;
 
 /*
  * Singleton get instanse
@@ -24,7 +23,7 @@ class REDIS
 
         private function __construct()
             {
-                $this->CRLF=sprintf('%s%s', chr(13), chr(10));
+
             }
 
         function __destruct()
@@ -69,10 +68,10 @@ class REDIS
                 $start=microtime(true);
                 array_unshift($args, strtoupper($name));
 
-                $command=sprintf('*%d%s%s%s', count($args), $this->CRLF, implode(array_map(function($arg)
+                $command=sprintf('*%d%s%s%s', count($args), sprintf('%s%s', chr(13), chr(10)), implode(array_map(function($arg)
                     {
-                        return sprintf('$%d%s%s', strlen($arg), $this->CRLF, $arg);
-                    }, $args), $this->CRLF), $this->CRLF);
+                        return sprintf('$%d%s%s', strlen($arg), sprintf('%s%s', chr(13), chr(10)), $arg);
+                    }, $args), sprintf('%s%s', chr(13), chr(10))), sprintf('%s%s', chr(13), chr(10)));
 
                 for ($written=0; $written<strlen($command); $written+=$fwrite)
                     {
@@ -186,7 +185,7 @@ class REDIS
             }
 
 
-        static function __callStatic($name, $args=array())
+        public static function __callStatic($name, $args=array())
             {
                 $red=REDIS::init();
                 return call_user_func_array(array($red, $name), $args);
