@@ -173,7 +173,8 @@ class DB
             {
 
                 $db=DB::init();
-                if ($db->links[$db->active_link])
+
+                if (isset($db->links[$db->active_link]))
                     {
                         $ans=$db->links[$db->active_link]->query($mysql_query, $fetch_as_object, $object_parameters);
                         $db->stats[]=array('Link'          =>$db->active_link,
@@ -196,7 +197,6 @@ class DB
                                            'Affected_rows' =>0);
 
                         throw new DB_exception('Unable to establish link "'.$db->active_link.'"');
-                        return false;
                     }
 
             }
