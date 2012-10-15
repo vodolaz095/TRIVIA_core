@@ -161,7 +161,7 @@ class DB
      * Function executes MySQL query on the active database link - @see DB::setLink($link_name);
      * @static
      * @param string $mysql_query - raw MySQL query to be executed - <i>protection from mysql injections HAS TO BE applied! - @see DB::f($string_to_escape)</i>
-     * @param null $fetch_as_object - if you want to fetch result as object input there a name of object class
+     * @param string $fetch_as_object - if you want to fetch result as object input there a name of object class
      * @param array $object_parameters - parameters needed to be setted to object to be created - @see mysql_fetch_object() at @link(http://php.net/manual/en/function.mysql-fetch-object.php) for details
      * @return bool - on update/insert/delete queries
      * @return array/array of objects - on select
@@ -201,6 +201,51 @@ class DB
 
             }
 
+    /**
+     * @param string $mysql_query - raw MySQL query to be executed - <i>protection from mysql injections HAS TO BE applied! - @see DB::f($string_to_escape)</i>
+     * @param null $fetch_as_object
+     * @static
+     * @param string $fetch_as_object - if you want to fetch result as object input there a name of object class
+     * @param array $object_parameters - parameters needed to be setted to object to be created - @see mysql_fetch_object() at @link(http://php.net/manual/en/function.mysql-fetch-object.php) for details
+     * @return bool - on update/insert/delete queries
+     * @return array/array of objects - on select
+     */
+    static public function fetchAll($mysql_query, $fetch_as_object=null, $object_parameters=array())
+        {
+            return DB::q($mysql_query, $fetch_as_object, $object_parameters);
+        }
+
+    /**
+     * @param string $mysql_query  - raw MySQL query to be executed - <i>protection from mysql injections HAS TO BE applied! - @see DB::f($string_to_escape)</i>
+     * @param null $fetch_as_object
+     * @static
+     * @param string $fetch_as_object - if you want to fetch result as object input there a name of object class
+     * @param array $object_parameters - parameters needed to be setted to object to be created - @see mysql_fetch_object() at @link(http://php.net/manual/en/function.mysql-fetch-object.php) for details
+     * @return bool - on update/insert/delete queries
+     * @return associated array of row values or objects of row values- on select -
+     */
+    static public function fetchRow($mysql_query, $fetch_as_object=null, $object_parameters=array())
+        {
+            $ans=DB::q($mysql_query, $fetch_as_object, $object_parameters);
+            return is_array($ans) ? (isset($ans[0])? $ans[0]: false) : false;
+        }
+
+    /**
+     * @param string $mysql_query - raw MySQL query to be executed - <i>protection from mysql injections HAS TO BE applied! - @see DB::f($string_to_escape)</i>
+     * @param string $fetch_as_object - if you want to fetch result as object input there a name of object class
+     * @static
+     * @param array $object_parameters - parameters needed to be setted to object to be created - @see mysql_fetch_object() at @link(http://php.net/manual/en/function.mysql-fetch-object.php) for details
+     * @return bool
+     * @return value
+     * <code>
+     * echo DB::fetchSingle('SELECT (2+1)'); // prints 3
+     * </code>
+     */
+    static public function fetchSingle($mysql_query)
+        {
+            $ans=DB::fetchRow($mysql_query);
+            return is_array($ans) ? (isset($ans[0])? $ans[0]: false) : false;
+        }
     /**
      * Function escapes string from special characters witch can cause MySQL injections
      * @static
@@ -316,5 +361,6 @@ class DB
                 return $db->driver;
             }
     }
+
 
 
