@@ -272,7 +272,6 @@ class ROUTER
                     $unknown_route = false;
                     if (isset($assign['path']))
                     {
-                        $a=ROUTER::getParameters(); /*deprecating!*/
                         require_once $assign['path'];
                     }
                     elseif(isset($assign['function']))
@@ -285,7 +284,6 @@ class ROUTER
                         throw new RouterException('Wrong type of route?');
                     }
                     break;
-                    //die($assign['path']);
                 }
             }
 
