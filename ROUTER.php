@@ -48,6 +48,14 @@ class ROUTER
     }
 
     /**
+     * @return string - directory
+     */
+        public static function getCurrentDir()
+    {
+        $router=ROUTER::init();
+        return($router->current_dir);
+    }
+    /**
      * Assign module action for route
      * @param string-regex $route - route to be assigned -
      * @param string $module - module name (consists only from letters, _ and digits) - in folder `modules` subfolder `indx` is a module name
