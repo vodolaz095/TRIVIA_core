@@ -6,3 +6,4 @@ require_once 'FILECACHE.php';
 require_once 'REDISKO.php';
 require_once 'ROUTER.php';
 require_once 'IMAGE.php';
+require_once 'VISITOR.php';
