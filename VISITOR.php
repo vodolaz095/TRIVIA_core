@@ -47,16 +47,20 @@ class VISITOR
                 }
             }
 
-        public static function setMedia($baseUSER_descendantName)
+    /**
+     * @param class $baseUSER_descendantName - descendant of baseUSER class to represent Users model
+     * @return bool - true on success
+     * @throws UserException when
+     */
+
+    public static function setMedia($baseUSER_descendantName)
         {
             if(get_parent_class($baseUSER_descendantName)=='baseUSER')
             {
-                if(method_exists($baseUSER_descendantName,'auth'))
-                {
-                    $current_user=VISITOR::init();
-                    $current_user->media=$baseUSER_descendantName;
-                    $current_user->user=new $baseUSER_descendantName();
-                }
+                $current_user=VISITOR::init();
+                $current_user->media=$baseUSER_descendantName;
+                $current_user->user=new $baseUSER_descendantName();
+                return true;
             }
             else
             {
@@ -73,11 +77,15 @@ class VISITOR
                 return self::$instance;
             }
 
-        public static function get($value=null)
+    /**
+     * Get current authenticated user parameter
+     * @param string/null $value
+     * @return value on success, false on error ( or user is not authenticated )
+     */
+    public static function get($value=null)
             {
                 if(VISITOR::isAuth())
                     {
-//                        return 1;
                         $v=VISITOR::init();
                         return $v->user->$value;
                     }
@@ -85,48 +93,77 @@ class VISITOR
                     return false;
             }
 
-        public static function getRole()
+    /**
+     * Get the name of the current used class to represent Users model
+     * @return string
+     */
+    public static function getRole()
             {
                 $v=VISITOR::init();
                 return $v->media;
             }
 
-        public static function getId()
+    /**
+     * Returns the current authenticated users ID if it is present
+     * @return int value
+     */
+    public static function getId()
             {
                 return VISITOR::get('id');
             }
+    /**
+     * Returns the current authenticated users Email if it is present
+     * @return string value
+     */
 
         public static function getEmail()
             {
                 return VISITOR::get('email');
             }
+    /**
+     * Returns the current authenticated users Login if it is present
+     * @return string value
+     */
 
         public static function getUsername()
             {
                 return VISITOR::get('login');
             }
 
+    /**
+     * Returns true is user is authenticated
+     * @return boolean
+     */
+
         public static function isLogined()
             {
                 $current_user=VISITOR::init();
                 return $current_user->user->isAuth();
             }
-        public static function isAuth()
+
+    /**
+     * Wrapper for VISITOR::isLogined()
+     * @return bool
+     */
+    public static function isAuth()
             {
                 return VISITOR::isLogined();
             }
 
-        public static function auth($login,$password)
+    /**
+     * Calls the method auth of carried user's model class, to authenticate a user
+     * @param string $login
+     * @param string $password
+     * @throws UserException
+     */
+    public static function auth($login,$password)
             {
                 $current_user=VISITOR::init();
                 if($current_user->media)
                 {
                     if(get_parent_class($current_user->user)=='baseUSER')
                     {
-                        if(method_exists($current_user->media,'auth'))
-                        {
-                            $current_user->user->auth($login,$password);
-                        }
+                       $current_user->user->auth($login,$password);
                     }
                     else
                     {
@@ -139,10 +176,13 @@ class VISITOR
                 }
             }
 
-        public static function logoff()
+    /**
+     * Calls the logoff method of carried user's model class, to logoff user
+     */
+    public static function logoff()
             {
                 $current_user=VISITOR::init();
-                $current_user->user->logoff();
+                return $current_user->user->logoff();
             }
 
         public static function debug()
@@ -150,7 +190,9 @@ class VISITOR
                 $current_user=VISITOR::init();
                 print_r($current_user->user);
             }
-
+    /**
+     * Calls the reload method of carried user's model class, to repopulate users values in session
+     */
         public static function reload()
             {
                 $current_user=VISITOR::init();
@@ -158,10 +200,7 @@ class VISITOR
                 {
                     if(get_parent_class($current_user->user)=='baseUSER')
                     {
-                        if(method_exists($current_user->media,'auth'))
-                        {
-                            $current_user->user->reload();
-                        }
+                        $current_user->user->reload();
                     }
                     else
                     {
@@ -174,7 +213,11 @@ class VISITOR
                 }
             }
 
-        public static function getFlash()
+    /**
+     * Get current flash message for a user
+     * @return string|bool
+     */
+    public static function getFlash()
         {
             if(isset($_SESSION['flash']))
             {
@@ -189,7 +232,12 @@ class VISITOR
             return($a);
         }
 
-        public static function setFlash($flash_message)
+    /**
+     * Sets the current flash message to user
+     * @param string $flash_message
+     * @return bool
+     */
+    public static function setFlash($flash_message)
         {
             $_SESSION['flash']=$flash_message;
             return(true);
@@ -211,7 +259,6 @@ class VISITOR
                     if(method_exists($current_user->user,'auth'))
                     {
                         return call_user_func_array(array($current_user->user,$name),$arguments);
-                        //return $current_user->user->$name($arguments);
                     }
                 }
                 else
