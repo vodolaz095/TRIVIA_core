@@ -244,7 +244,23 @@ class DB
     static public function fetchSingle($mysql_query)
         {
             $ans=DB::fetchRow($mysql_query);
-            return is_array($ans) ? (isset($ans[0])? $ans[0]: false) : false;
+            if(is_array($ans))
+                {
+                if(count($ans)==1)
+                    {
+                        $a=array_values($ans);
+                        return isset($a[0]) ? $a[0] : false;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            else
+                {
+                    return false;
+                }
+
         }
     /**
      * Function escapes string from special characters witch can cause MySQL injections
