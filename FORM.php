@@ -9,7 +9,7 @@ private $csrf='csrf';
 
 public function __construct($csrf=null)
     {
-        if($csrf) $this->csrf=md5($csrf);
+        if($csrf) $this->csrf=md5('trolo'.$csrf);
     }
 
 public function addLabel($name,$caption=null,$value=null)
@@ -115,13 +115,13 @@ private function filter($text)
 
 private function generateCSRF()
     {
-        return md5('klojiliha'.$_SERVER['REQUEST_URI'].$_SERVER['HTTP_HOST'].$_SERVER['HTTP_USER_AGENT']);
+        return md5('dazdraperma'.$_SERVER['REQUEST_URI'].$_SERVER['HTTP_HOST'].$_SERVER['HTTP_USER_AGENT']);
     }
 
 private function validateCSRF($a=null)
     {
         if($a)
-            return ($a==md5('klojiliha'.$_SERVER['REQUEST_URI'].$_SERVER['HTTP_HOST'].$_SERVER['HTTP_USER_AGENT']));
+            return ($a==md5('dazdraperma'.$_SERVER['REQUEST_URI'].$_SERVER['HTTP_HOST'].$_SERVER['HTTP_USER_AGENT']));
         else
             return false;
     }
@@ -194,7 +194,12 @@ public function render($submit_text='Сохранить',$reset_text='Отмен
         ob_start();
         ?>
     <form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post">
+        <input name="<?php echo md5($this->csrf);?>" type="hidden" value="<?php echo md5(time().'lolz');?>">
         <input name="<?php echo $this->csrf;?>" type="hidden" value="<?php echo $this->generateCSRF();?>">
+        <input name="<?php echo md5(time());?>" type="hidden" value="<?php echo md5(session_id().'lolz');?>">
+        <input name="<?php echo md5('a'.$this->csrf);?>" type="hidden" value="<?php echo md5(session_id().'2g2');?>">
+        <input name="<?php echo md5('fuckoff'.$this->csrf);?>" type="hidden" value="<?php echo md5('a4sd'.$this->generateCSRF());?>">
+
         <table border="0" cellpadding="3" cellspacing="0" align="center" width="100%">
             <tr>
                 <td width="33%"></td>
