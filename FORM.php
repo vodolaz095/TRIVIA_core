@@ -132,49 +132,47 @@ public function submit()
             {
             foreach(array_keys($this->fields) as $field)
                 {
-                    if(isset($_POST[$field]))
+                    if(isset($_POST[md5($this->csrf.$field)]))
                         {
                             if($this->fields[$field]['type']=='text' or $this->fields[$field]['type']=='password')
                                 {
-                                    if(empty($_POST[$field]) or preg_match($this->fields[$field]['regex'],htmlspecialchars($_POST[$field],ENT_QUOTES,'UTF-8')))
+                                    if(empty($_POST[md5($this->csrf.$field)]) or preg_match($this->fields[$field]['regex'],htmlspecialchars($_POST[md5($this->csrf.$field)],ENT_QUOTES,'UTF-8')))
                                         {
-                                            $this->fields[$field]['value']=$_POST[$field];
-                                            $this->clean[$field]=htmlspecialchars($_POST[$field],ENT_QUOTES,'UTF-8');
+                                            $this->fields[$field]['value']=$_POST[md5($this->csrf.$field)];
+                                            $this->clean[$field]=htmlspecialchars($_POST[md5($this->csrf.$field)],ENT_QUOTES,'UTF-8');
                                         }
                                     else
                                         {
-                                            $this->fields[$field]['value']=$_POST[$field];
+                                            $this->fields[$field]['value']=$_POST[md5($this->csrf.$field)];
                                             $this->setError($field,$this->fields[$field]['error_message']);
                                             unset($this->clean[$field]);
-                                            //$this->fields[$field]['error']=true;
                                         }
                                 }
                             elseif($this->fields[$field]['type']=='textarea')
                                 {
-                                    $this->fields[$field]['value']=$_POST[$field];
-                                    $this->clean[$field]=$this->filter($_POST[$field]);
+                                    $this->fields[$field]['value']=$_POST[md5($this->csrf.$field)];
+                                    $this->clean[$field]=$this->filter($_POST[md5($this->csrf.$field)]);
                                 }
                             elseif($this->fields[$field]['type']=='checkbox')
                                 {
-                                    if(isset($_POST[$field]))
+                                    if(isset($_POST[md5($this->csrf.$field)]))
                                         {
-                                         //   $this->fields[$field]['value']=$_POST[$field];
                                             $this->fields[$field]['check']=true;
-                                            $this->clean[$field]=$this->filter($_POST[$field]);
+                                            $this->clean[$field]=$this->filter($_POST[md5($this->csrf.$field)]);
                                         }
                                 }
                             elseif($this->fields[$field]['type']=='dropdown')
                                 {
-                                    if(isset($_POST[$field]) and in_array($_POST[$field],array_keys($this->fields[$field]['value'])))
+                                    if(isset($_POST[md5($this->csrf.$field)]) and in_array($_POST[md5($this->csrf.$field)],array_keys($this->fields[$field]['value'])))
                                         {
-                                            $this->fields[$field]['selected']=$_POST[$field];
-                                            $this->clean[$field]=$this->filter($_POST[$field]);
+                                            $this->fields[$field]['selected']=$_POST[md5($this->csrf.$field)];
+                                            $this->clean[$field]=$this->filter($_POST[md5($this->csrf.$field)]);
                                         }
                                 }
                             elseif($this->fields[$field]['type']=='hidden')
                                 {
 
-                                    if(isset($_POST[$field])) $this->clean[$field]=$this->filter($_POST[$field]);
+                                    if(isset($_POST[md5($this->csrf.$field)])) $this->clean[$field]=$this->filter($_POST[md5($this->csrf.$field)]);
                                 }
                             else
                                 {
@@ -191,7 +189,7 @@ public function submit()
 
 public function render($submit_text='Сохранить',$reset_text='Отмена')
     {
-        ob_start();
+        ob_start();//todo - jquery - on edit! + random forms which are hidded by jquery
         ?>
     <form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post">
         <input name="<?php echo md5($this->csrf);?>" type="hidden" value="<?php echo md5(time().'lolz');?>">
@@ -222,7 +220,7 @@ public function render($submit_text='Сохранить',$reset_text='Отмен
 <?php endif;?>
                             <td align="right"><?php echo $this->fields[$field]['caption'];?></td>
                             <td align="left" colspan="<?php if(isset($this->fields[$field]['description'])) echo 1; else echo 2;?>">
-                                <input name="<?php echo $field;?>"
+                                <input name="<?php echo md5($this->csrf.$field);?>"
                                        type="<?php echo $this->fields[$field]['type'];?>"
                                        value="<?php echo $this->fields[$field]['value'];?>">
                             </td>
@@ -243,7 +241,7 @@ public function render($submit_text='Сохранить',$reset_text='Отмен
 <?php endif;?>
                             <td  colspan="<?php if(isset($this->fields[$field]['description'])) echo 2; else echo 3;?>">
                                     <?php echo $this->fields[$field]['caption'];?><br>
-                                <textarea class="-metrika-nokeys" rows="<?php echo $this->fields[$field]['rows'];?>" cols="<?php echo $this->fields[$field]['cols'];?>" style="width: 100%;" name="<?php echo $field;?>"><?php echo $this->fields[$field]['value'];?></textarea>
+                                <textarea class="-metrika-nokeys" rows="<?php echo $this->fields[$field]['rows'];?>" cols="<?php echo $this->fields[$field]['cols'];?>" style="width: 100%;" name="<?php echo md5($this->csrf.$field);?>"><?php echo $this->fields[$field]['value'];?></textarea>
                             </td>
                             <?php if(isset($this->fields[$field]['description'])) echo '<td align="left">'.$this->fields[$field]['description'].'</td>'; else echo '<td></td>';?>
     </tr>
@@ -261,7 +259,7 @@ public function render($submit_text='Сохранить',$reset_text='Отмен
     <tr>
 <?php endif;?>
                             <td colspan="<?php if(isset($this->fields[$field]['description'])) echo 2; else echo 3;?>" align="center">
-                                <input type="checkbox" name="<?php echo $field;?>" value="<?php echo $this->fields[$field]['value'];?>" <?php if($this->fields[$field]['check']) echo ' checked="checked" ';?>><?php echo $this->fields[$field]['caption'];?>
+                                <input type="checkbox" name="<?php echo md5($this->csrf.$field);?>" value="<?php echo $this->fields[$field]['value'];?>" <?php if($this->fields[$field]['check']) echo ' checked="checked" ';?>><?php echo $this->fields[$field]['caption'];?>
                             </td>
                             <?php if(isset($this->fields[$field]['description'])) echo '<td align="left">'.$this->fields[$field]['description'].'</td>'; else echo '<td></td>';?>
     </tr>
@@ -280,7 +278,7 @@ public function render($submit_text='Сохранить',$reset_text='Отмен
 <?php endif;?>
                             <td align="right"><?php echo $this->fields[$field]['caption'];?></td>
                             <td align="left"  colspan="<?php if(isset($this->fields[$field]['description'])) echo 1; else echo 2;?>">
-                                <select name="<?php echo $field;?>">
+                                <select name="<?php echo md5($this->csrf.$field);?>">
                                     <?php foreach(array_keys($this->fields[$field]['value']) as $value):?>
                                     <option value="<?php echo $value;?>"
                                         <?php if($value==$this->fields[$field]['selected']) echo ' selected="selected" ';?>
@@ -302,7 +300,7 @@ public function render($submit_text='Сохранить',$reset_text='Отмен
                         }
                     elseif($this->fields[$field]['type']=='hidden')
                         {
-?><input name="<?php echo $field;?>" type="hidden" value="<?php echo $this->fields[$field]['value'];?>"><?php
+?><input name="<?php echo md5($this->csrf.$field);?>" type="hidden" value="<?php echo $this->fields[$field]['value'];?>"><?php
                         }
 
                 }
