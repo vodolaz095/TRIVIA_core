@@ -187,6 +187,11 @@ public function submit()
             return false;
     }
 
+public function getElementName($elementName)
+    {
+        return md5($this->csrf.$elementName);
+    }
+
 public function render($submit_text='Сохранить',$reset_text='Отмена')
     {
         ob_start();//todo - jquery - on edit! + random forms which are hidded by jquery
