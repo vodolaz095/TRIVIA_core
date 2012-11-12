@@ -35,7 +35,7 @@ class VISITOR
                                 }
                                 else
                                 {
-                                    unset($_SESSION['vizitor']);
+                                    unset($_SESSION['vizitor']);//защита от кражи сессии
                                 }
                             }
                         else
