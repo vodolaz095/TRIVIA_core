@@ -325,3 +325,40 @@ abstract class baseUSER
         }
 
     }
+
+
+/*
+//Пример использования
+class USER extends baseUSER
+    {
+        public function reload()
+            {
+                session_regenerate_id();
+            }
+
+        public function auth($login,$password)
+            {
+
+                if($login=='myself' and $password=='test')
+                    {
+                        $this->user['login']=$login;
+                        return true;
+                    }
+                else
+                    {
+                        return false;
+                    }
+            }
+
+        public function doSmthng()
+            {
+                return time();
+            }
+
+    }
+
+VISITOR::setMedia('USER');
+VISITOR::auth($_POST['login'],$_POST['password']);
+VISITOR::getUsername();
+echo VISITOR::doSmthng();
+//*/
