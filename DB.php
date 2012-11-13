@@ -73,48 +73,28 @@ class DB
                             {
                                 if ($db->driver=='PDO')
                                     {
-                                        if ($link=new DB_PDO_MySQL($dsn))
-                                            {
-                                                $db->links[$link_name]=$link;
-                                                $db->active_link=$link_name;
-                                            }
-                                        else
-                                            {
-                                                $db->links[$link_name]=false;
-                                                throw new DB_exception('Unable to establish link "'.$link_name.'"');
-                                            }
+                                        $classname='DB_PDO_MySQL';
                                     }
                                 elseif ($db->driver=='MySQLi')
                                     {
-                                        if ($link=new DB_MySQLi($dsn))
-                                            {
-                                                $db->links[$link_name]=$link;
-                                                $db->active_link=$link_name;
-                                            }
-                                        else
-                                            {
-                                                $db->links[$link_name]=false;
-                                                throw new DB_exception('Unable to establish link "'.$link_name.'"');
-                                            }
-
+                                        $classname='DB_MySQLi';
                                     }
                                 elseif ($db->driver=='MySQL')
                                     {
-                                        if ($link=new DB_MySQL($dsn))
-                                            {
-                                                $db->links[$link_name]=$link;
-                                                $db->active_link=$link_name;
-                                            }
-                                        else
-                                            {
-                                                $db->links[$link_name]=false;
-                                                throw new DB_exception('Unable to establish link "'.$link_name.'"');
-                                            }
+                                        $classname='DB_MySQL';
                                     }
                                 else
                                     {
                                         throw new DB_exception('Install PHP extensions for MySQL interaction!');
                                     }
+
+//                                    try{ $link=new $classname($dsn);
+//                                    } catch (DB_exception $e) {
+//                                         $link=false;
+//                                    }
+                                    $link=new $classname($dsn);
+                                    $db->links[$link_name]=$link;
+                                    if($link) $db->active_link=$link_name;
                             }
                     }
                 else
