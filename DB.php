@@ -155,8 +155,6 @@ class DB
                 return ($db->active_link) ? $db->active_link : false;
             }
 
-
-
     /**
      * Function executes MySQL query on the active database link - @see DB::setLink($link_name);
      * @static
@@ -286,27 +284,37 @@ class DB
      */
         public static function insert($table_name, $associated_array_of_values)
             {
-
-                $columns='`'.implode('`,`', array_keys($associated_array_of_values)).'`';
+                //todo - кривовато, но зато работает во всех проектах
+                $columns=array();
                 $values=array();
-                foreach ($associated_array_of_values as $value)
+                foreach ($associated_array_of_values as $key=>$value)
                     {
-                        $values[]=DB::f($value);
+                        if($value=='NULL')
+                            {
+                                $columns[]='`'.$key.'`';
+                                $values[]='NULL';
+                            }
+                        else
+                            {
+                                $columns[]='`'.$key.'`';
+                                $values[]='"'.DB::f($value).'"';
+                            }
                     }
-                $values='"'.implode('","', $values).'"';
-                $q='INSERT INTO `'.$table_name.'`('.$columns.') VALUES ('.$values.')';
+                $columnsString=implode(',',$columns);
+                $valuesString=implode(',', $values);
+
+                $q='INSERT INTO `'.$table_name.'`('.$columnsString.') VALUES ('.$valuesString.')';
                 $current_link=DB::getLinkName();
                 $DB=DB::init();
                 $a=$DB->q($q);
-//                print_r(array_keys($DB->links));
-//                die();
+/* not properly tested for now!
                 if(in_array('backup',array_keys($DB->links)))
                 {
                     $DB->setLink('backup');
                     $DB->q($q);
                     $DB->setLink($current_link);
                 }
-
+//*/
                 return $a;
             }
 
@@ -332,13 +340,14 @@ class DB
                 $current_link=DB::getLinkName();
                 $DB=DB::init();
                 $a=$DB->q($q);
+/*  not properly tested for now
                 if(in_array('backup',array_keys($DB->links)))
                 {
                     $DB->setLink('backup');
                     $DB->q($q);
                     $DB->setLink($current_link);
                 }
-
+//*/
 
                 return $a;
             }
