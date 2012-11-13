@@ -36,8 +36,8 @@ class DB
                     }
                 elseif (extension_loaded('mysql'))
                     {
-                        require_once 'dbdrv/mysql.php';
                         $this->driver='MySQL';
+                        require_once 'dbdrv/mysql.php';
                     }
                 else
                     {
