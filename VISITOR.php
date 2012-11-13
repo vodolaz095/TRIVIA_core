@@ -341,7 +341,7 @@ class USER extends baseUSER
 
                 if($login=='myself' and $password=='test')
                     {
-                        $this->user['login']=$login;
+                        $this->login=$login;
                         return true;
                     }
                 else
