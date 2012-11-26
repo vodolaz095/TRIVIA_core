@@ -212,41 +212,17 @@ class ROUTER
 
     /**
      * Returns the route parameters
+     * @param  $number_of_argument - if assignet,returns the number of argument in query string
      * @return array
      */
-    public static function getParameters()
+    public static function getParameters($number_of_argument=false)
     {
         $router = ROUTER::init();
-        return $router->args;
-    }
-
-    public static function setTemplate($tpl_name)
-    {
-        if(preg_match('~^[0-9a-z_]+$~i',$tpl_name))
-        {
-            $router = ROUTER::init();
-            $path = $router->current_dir . '/modules/' . $tpl_name . '.tpl.php';
-            if(file_exists($path))
+        if($number_of_argument)
             {
-                require_once $path;
-                if(is_callable('makehead') and is_callable('makebottom'))
-                {
-                    return true;
-                }
-                else
-                {
-                    throw new RouterException('Does template '.$path.' have functions makehead and makebottom?');
-                }
+                return isset($router->args[$number_of_argument]) ? $router->args[$number_of_argument] : $router->args;
             }
-            else
-            {
-                throw new RouterException('Unable to locate template file in '.$path);
-            }
-        }
-        else
-        {
-            throw new RouterException('Wrong template name!');
-        }
+        else return $router->args;
     }
 
     /**
