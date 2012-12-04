@@ -5,6 +5,7 @@ private $fields=array();
 private $clean=array();
 private $submited;
 private $csrf='csrf';
+private $hasErrors=false;
 
 
 public function __construct($csrf=null)
@@ -145,6 +146,7 @@ public function submit()
                                         {
                                             $this->fields[$field]['value']=$_POST[md5($this->csrf.$field)];
                                             $this->setError($field,$this->fields[$field]['error_message']);
+                                            $this->hasErrors=true;
                                             unset($this->clean[$field]);
                                         }
                                 }
@@ -172,7 +174,9 @@ public function submit()
                             elseif($this->fields[$field]['type']=='hidden')
                                 {
 
-                                    if(isset($_POST[md5($this->csrf.$field)])) $this->clean[$field]=$this->filter($_POST[md5($this->csrf.$field)]);
+                                    if(isset($_POST[md5($this->csrf.$field)])){
+                                        $this->clean[$field]=$this->filter($_POST[md5($this->csrf.$field)]);
+                                    }
                                 }
                             else
                                 {
@@ -338,6 +342,11 @@ public function setError($name,$error_text)
             {
                 return false;
             }
+    }
+
+public function hasError()
+    {
+        return $this->hasErrors;
     }
 
 public function __toString()

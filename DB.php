@@ -205,7 +205,7 @@ class DB
     static public function fetchRow($mysql_query, $fetch_as_object=null, $object_parameters=array())
         {
             $ans=DB::q($mysql_query, $fetch_as_object, $object_parameters);
-            return is_array($ans) ? (isset($ans[0])? $ans[0]: false) : false;
+            return is_array($ans) ? (isset($ans[0])? $ans[0] : false) : false;
         }
 
     /**
