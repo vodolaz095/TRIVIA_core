@@ -7,3 +7,4 @@ require_once 'REDISKO.php';
 require_once 'ROUTER.php';
 require_once 'IMAGE.php';
 require_once 'VISITOR.php';
+require_once 'PAGE.php';
