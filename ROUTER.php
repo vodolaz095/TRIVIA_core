@@ -220,7 +220,7 @@ class ROUTER
         $router = ROUTER::init();
         if($number_of_argument)
             {
-                return isset($router->args[$number_of_argument]) ? $router->args[$number_of_argument] : $router->args;
+                return isset($router->args[$number_of_argument]) ? $router->args[$number_of_argument] : false;
             }
         else return $router->args;
     }
