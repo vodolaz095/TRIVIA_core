@@ -324,6 +324,43 @@ abstract class baseUSER
             return true;
         }
 
+    /**
+     * Set flash message for user session
+     * @param string $text
+     * @return bool - true on succes
+     */
+        public final function setFlashMessage($text)
+            {
+                if (is_string($text))
+                    {
+                        $_SESSION['vizitor_flash'] = $text;
+                        return true;
+                    }
+                else
+                    {
+                        return false;
+                    }
+            }
+
+    /**
+     * Get flash message for user session
+     * @return string on success, false on empty flash message
+     */
+
+        public final function getFlashMessage()
+            {
+                if (isset($_SESSION['vizitor_flash']))
+                    {
+                        $ans = $_SESSION['vizitor_flash'];
+                        unset($_SESSION['vizitor_flash']);
+                        return $ans;
+                    }
+                else
+                    {
+                        return false;
+                    }
+            }
+
     }
 
 
