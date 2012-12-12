@@ -51,6 +51,7 @@ abstract class basePAGE
     <meta name="description" content="<?php echo $this->description;?>" />
     <meta name="keywords" content="<?php echo $this->keywords;?>" />
     <meta name="robots" content="<?php if($this->index) echo 'all'; else echo 'none';?>" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"> 
 <?php foreach($this->css as $css):?>
     <link rel="stylesheet" href="<?php echo $css;?>" type="text/css" media="screen" />
 <?php endforeach;?>
