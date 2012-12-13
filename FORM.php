@@ -304,7 +304,7 @@ public function render($submit_text='Сохранить',$reset_text='Отмен
                     elseif($this->fields[$field]['type']=='label')
                         {
 ?><tr>
-     <td align="center" colspan="3"><?php echo $this->fields[$field]['caption'];?></td>
+     <td align="center" colspan="3" id="<?php echo md5($this->csrf.$field);?>"><?php echo $this->fields[$field]['caption'];?></td>
 </tr><?php
                         }
                     elseif($this->fields[$field]['type']=='hidden')
