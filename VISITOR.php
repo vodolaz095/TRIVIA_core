@@ -35,7 +35,9 @@ class VISITOR
                                 }
                                 else
                                 {
-                                    unset($_SESSION['vizitor']);//защита от кражи сессии
+                                    //защита от кражи сессии
+                                    unset($_SESSION['vizitor']);
+                                    unset($_SESSION['UA']);
                                 }
                             }
                         else
