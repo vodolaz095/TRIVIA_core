@@ -38,6 +38,7 @@ class VISITOR
                                     //защита от кражи сессии
                                     unset($_SESSION['vizitor']);
                                     unset($_SESSION['UA']);
+                                    session_destroy();
                                 }
                             }
                         else
@@ -322,6 +323,7 @@ abstract class baseUSER
         {
             if($this->isAuth()){
                 unset($_SESSION['vizitor'][get_called_class()]);
+                session_destroy();
             }
             return true;
         }
