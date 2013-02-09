@@ -48,6 +48,7 @@ abstract class basePAGE
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title><?php echo $this->title;?></title>
+    <meta http-equiv="content-language" content="ru-RU">
     <meta name="description" content="<?php echo $this->description;?>" />
     <meta name="keywords" content="<?php echo $this->keywords;?>" />
     <meta name="robots" content="<?php if($this->index) echo 'all'; else echo 'none';?>" />

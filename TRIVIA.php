@@ -8,3 +8,6 @@ require_once 'ROUTER.php';
 require_once 'IMAGE.php';
 require_once 'VISITOR.php';
 require_once 'PAGE.php';
+header('X-Frame-Options: DENY');
+header('X-Content-Type-Options: nosniff');
+header('X-XSS-Protection: 1; mode=block;');
